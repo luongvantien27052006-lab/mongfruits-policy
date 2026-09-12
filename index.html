@@ -55,14 +55,16 @@
     <div class="brand"><span class="dot"></span><h1>Mọng Fruits</h1></div>
     <p>Chính sách &amp; Điều khoản của ứng dụng</p>
     <nav>
-      <a href="#terms" id="tab-terms" aria-current="true">Điều khoản</a>
-      <a href="#privacy" id="tab-privacy">Quyền riêng tư</a>
+      <!-- Đã chuyển trạng thái active sang tab Quyền riêng tư -->
+      <a href="#terms" id="tab-terms">Điều khoản</a>
+      <a href="#privacy" id="tab-privacy" aria-current="true">Quyền riêng tư</a>
     </nav>
   </div>
 </header>
 
 <main class="wrap">
-  <section id="terms">
+  <!-- Ẩn phần Điều khoản đi ở trạng thái mặc định -->
+  <section id="terms" hidden>
     <p class="updated">Cập nhật lần cuối: tháng 7 năm 2026</p>
 
     <h2>Điều khoản sử dụng</h2>
@@ -112,7 +114,8 @@
     <p>Điều khoản có thể được cập nhật theo thời gian. Việc bạn tiếp tục sử dụng ứng dụng sau khi cập nhật đồng nghĩa với việc chấp nhận nội dung mới.</p>
   </section>
 
-  <section id="privacy" hidden>
+  <!-- Hiện phần Quyền riêng tư ở trạng thái mặc định -->
+  <section id="privacy">
     <p class="updated">Cập nhật lần cuối: tháng 7 năm 2026</p>
 
     <h2>Chính sách quyền riêng tư</h2>
@@ -170,7 +173,7 @@
   const tabs = { terms: document.getElementById('tab-terms'), privacy: document.getElementById('tab-privacy') };
   const panes = { terms: document.getElementById('terms'), privacy: document.getElementById('privacy') };
   function show(name){
-    if(!panes[name]) name = 'terms';
+    if(!panes[name]) name = 'privacy'; /* Sửa fallback mặc định thành privacy */
     for (const k in panes){
       panes[k].hidden = (k !== name);
       tabs[k].setAttribute('aria-current', String(k === name));
@@ -179,7 +182,8 @@
   for (const k in tabs){
     tabs[k].addEventListener('click', e => { e.preventDefault(); history.replaceState(null,'','#'+k); show(k); });
   }
-  show(location.hash.replace('#','') || 'terms');
+  /* Đổi từ 'terms' sang 'privacy' để khi không có dấu # trên URL thì tự nhảy vào Quyền riêng tư */
+  show(location.hash.replace('#','') || 'privacy');
 </script>
 </body>
 </html>
